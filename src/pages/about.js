@@ -13,9 +13,7 @@ export default function AboutPage() {
         About 
     </h1>
     <Link to="/">Back to home</Link>
-</main>
+    </main>
     </Layout>
- 
-      
     )
 }

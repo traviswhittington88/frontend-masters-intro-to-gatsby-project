@@ -1,0 +1,33 @@
+.header {
+    background: var(--black);
+    color: var(--white);
+    display: flex; /* allows you to put the home link and nav to be spread out using space-between */
+    justify-content: space-between;
+    padding: 1rem;  /* A rem is dictated by the original font-size set in the global css file.. so 1 rem = 18px in this case*/
+}
+
+.header a {
+    color: inherit;
+    display: inline-block; /* to imply some padding around it */
+    padding: 0.5rem; /* 9px in this case */
+    text-decoration: none;  /* this is an accessibility issue if you do not add something back, see style below */
+}
+
+.header a:focus,
+.header a:hover {
+    background: var(--white);
+    color: var(--black);
+}
+
+.content {
+    margin: 3rem auto; /* auto centers */
+    max-width: 54ch; /* using characters is better for legibility because it affects line-length instead of the html node, e.g. a div */
+    /* 54 characters give you a good legible width for tracking and reading text.. read up on this topic. Whatever we do with font, always 
+      make sure the line-length is priority
+    */
+}
+
+/* notice .content and .header are not very unique and could cause collisions.. could use BEM, but because we are using CSS modules
+we don't care!! It's imported as a JS package and becomes totally unique because the loaders will convert them into a unique class name
+when imported into the DOM */
+
