@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { Link, useStaticQuery, graphql } from 'gatsby'; // useStaticQuery is a hook (the simplest option)
+import { StaticImage } from 'gatsby-plugin-image'; // if you know the image this is useful
 import Layout from '../components/layout.js';
+
+import { imageWrapper } from '../styles/index.module.css'; // converts from kabob to camel by default
 
 export default function IndexPage() {
 	const data = useStaticQuery(graphql`
@@ -16,13 +19,39 @@ export default function IndexPage() {
           }
         }
       }
+			allSanityEpisode(
+    sort: {fields: date, order: DESC}
+    filter: {youtubeID: {ne: "null"}}
+    limit: 20
+  ) {
+    nodes {
+      id
+      slug {
+        current
+      }
+      title
+      guest {
+        name
+      }
+      gatsbyPath(filePath: "/episode/{SanityEpisode.slug__current}")
+    }
+  }
     }
   `);
 
 	const posts = data.allMdx.nodes;
-
+	const episodes = data.allSanityEpisode.nodes;
 	return (
 		<Layout>
+			<div className={imageWrapper}>
+				<StaticImage
+					src="../images/ivana-la-61jg6zviI7I-unsplash.jpg"
+					alt="a corgi sitting on a beed with red paper hears all over it. It looks unamused"
+					placeholder="tracedSVG"
+					width={300} // allows you to override css styles
+					height={300}
+				/>
+			</div>
 			<h1>Hello Frontend Masters</h1>
 			<Link to="/about">About Me</Link>
 
@@ -35,6 +64,21 @@ export default function IndexPage() {
 					</li>
 				))}
 			</ul>
+			<h2>
+				Latest episodes of <em>Learn with Jaons</em>
+			</h2>
+			<ul>
+				{episodes.map((episode) => (
+					<li key={episode.id}>
+						<Link to={episode.gatsbyPath}>
+							{episode.title} (with {episode.guest?.[0]?.name})  {/* optional chainning, if no guest doesn't breka page */}
+						</Link>
+					</li>
+				))}
+			</ul>
+			<a href="https://www.learnwithjason.dev/">
+				Watch all episodes of <em>Learn With Jason</em>
+			</a>
 		</Layout>
 	);
-}
+}	
